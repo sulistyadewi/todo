@@ -17,7 +17,7 @@ class Controller {
         res.status(500).json({ err });
       });
   }
-  static login(req, res) {
+  static login(req, res, next) {
     const { email, password } = req.body;
     const object = { email, password };
     User.findOne({ where: { email } })
@@ -34,7 +34,8 @@ class Controller {
       })
       .catch((err) => {
         console.log(err, "err login");
-        res.status(500).json({ msg: "internal server error" });
+        // res.status(500).json({ msg: "internal server error" });
+        next(err);
       });
   }
 }

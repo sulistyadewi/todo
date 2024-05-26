@@ -3,7 +3,7 @@ const db = require("../models");
 const User = db.User;
 console.log(User);
 
-function authentication(req, res) {
+function authentication(req, res, next) {
   const { token } = req.headers;
   console.log(token);
   let decodedTemp;
@@ -30,7 +30,7 @@ function authentication(req, res) {
         }
       })
       .catch((err) => {
-        res.status(500).json({ msg: "Ini dari authentication" });
+        next(err);
       });
   }
 }

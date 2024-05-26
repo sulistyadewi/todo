@@ -1,6 +1,26 @@
-import React from "react";
+"use client";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let response = await fetch(`http://localhost:3000/register`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (response.ok) {
+      router.replace("/login");
+    } else {
+      alert("registration failed");
+    }
+  };
+
   return (
     <div className="w-full h-screen">
       <div className="flex justify-center gap-40">
@@ -72,17 +92,12 @@ const register = () => {
         </div>
         <div className="basis-1/2 relative">
           <div className="bg-white max-w-md px-6 py-6 rounded-lg absolute mt-44">
-            <form action="" className="">
-              <div className="flex flex-col">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="h-12 mt-3 p-1 rounded border-b-2 border-slate-300"
-                />
-              </div>
+            <form action="" onSubmit={handleSubmit} className="">
               <div className="flex flex-col">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   className="h-12 mt-4 p-1 rounded border-b-2 border-slate-300"
                 />
@@ -90,11 +105,16 @@ const register = () => {
               <div className="flex flex-col">
                 <input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
                   className="h-12 mt-4 p-1 rounded border-b-2 border-slate-300"
                 />
               </div>
-              <button className="mt-4 bg-teal-600 text-white w-full py-2 rounded-full">
+              <button
+                type="submit"
+                className="mt-4 bg-teal-600 text-white w-full py-2 rounded-full"
+              >
                 Register
               </button>
             </form>

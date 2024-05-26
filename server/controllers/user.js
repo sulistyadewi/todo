@@ -19,18 +19,24 @@ class Controller {
   }
   static login(req, res, next) {
     const { email, password } = req.body;
-    const object = { email, password };
+    // const object = { email, password };
     User.findOne({ where: { email } })
       .then((data) => {
-        if (!data) throw { msg: "invalid email or password" };
-        let comparePassword = comparePass(password, data.password);
-        if (!comparePassword) throw { msg: "invalid email or password" };
-        let payload = {
-          id: data.id,
-          email: data.email,
-        };
-        let token = generateToken(payload);
-        res.status(200).json({ token });
+        if (!data) {
+          throw { msg: "invalid email or password" };
+        } else {
+          let comparePassword = comparePass(password, data.password);
+          if (!comparePassword) {
+            throw { msg: "invalid email or password" };
+          } else {
+            let payload = {
+              id: data.id,
+              email: data.email,
+            };
+            let token = generateToken(payload);
+            res.status(200).json({ token });
+          }
+        }
       })
       .catch((err) => {
         console.log(err, "err login");

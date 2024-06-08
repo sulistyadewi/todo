@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import Link from "next/link";
 
 const register = () => {
   const [email, setEmail] = useState("");
@@ -117,6 +118,9 @@ const register = () => {
               >
                 Register
               </button>
+              <p>
+                Have an account <Link href={"/login"}>login now!</Link>
+              </p>
             </form>
           </div>
           <div className="relative">

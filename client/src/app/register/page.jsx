@@ -1,7 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 import React, { useState } from "react";
 import Link from "next/link";
+import baseURL from "@/baseURL";
 
 const register = () => {
   const [email, setEmail] = useState("");
@@ -10,15 +12,27 @@ const register = () => {
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let response = await fetch(`http://localhost:3000/register`, {
+    let response = await fetch(`${baseURL}/register`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
     if (response.ok) {
-      router.replace("/login");
+      Swal.fire({
+        title: "Success",
+        text: "Register Successfully",
+        icon: "success",
+        confirmButtonText: "Oke!",
+      }).then(() => {
+        router.replace("/login");
+      });
     } else {
-      alert("registration failed");
+      Swal.fire({
+        title: "Error",
+        text: "Register Failed",
+        icon: "error",
+        confirmButtonText: "Try Again!",
+      });
     }
   };
 

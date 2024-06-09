@@ -1,7 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 import React, { useState } from "react";
 import Link from "next/link";
+import baseURL from "@/baseURL";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ function Login() {
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let respons = await fetch(`http://localhost:3000/login`, {
+    let respons = await fetch(`${baseURL}/login`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -18,9 +20,21 @@ function Login() {
     if (respons.ok) {
       let user = await respons.json();
       localStorage.setItem("token", user.token);
-      router.replace("/todo");
+      Swal.fire({
+        title: "Success",
+        text: "Login Successfully",
+        icon: "success",
+        confirmButtonText: "Oke!",
+      }).then(() => {
+        router.replace("/todo");
+      });
     } else {
-      alert("login-failed");
+      Swal.fire({
+        title: "Error",
+        text: "Login Failed",
+        icon: "error",
+        confirmButtonText: "Try Again!",
+      });
     }
   };
 

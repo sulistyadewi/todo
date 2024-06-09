@@ -1,14 +1,28 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "@/components/Form";
 import auth from "@/HOC/auth";
 import Link from "next/link";
+import baseURL from "@/baseURL";
 
 function ToDo() {
+  const [todos, setTodos] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetch(`${baseURL}/todo`, {
+        method: "GET",
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setTodos(data);
+    };
+    fetchData();
+  }, []);
+  console.log(todos, "ini todos");
   return (
     <div>
       {/* //   {toDos.map((toDo, index) => ( */}
+      <Form />
       <div className="mt-5 max-w-sm mx-auto border-2 border-teal-300 p-6 rounded-lg shadow-md">
         <svg
           xmlns="http://www.w3.org/2000/svg"

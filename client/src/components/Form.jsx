@@ -6,6 +6,10 @@ import { IoIosAdd } from "react-icons/io";
 import baseURL from "@/baseURL";
 
 function Form() {
+  let todo = { name: "", desc: "", due_date: "" };
+  const [toDos, setToDos] = useState([]);
+  const [newToDo, setNewToDo] = useState(todo);
+
   const handleOnChange = (e) => {
     setNewToDo({
       ...newToDo,
@@ -15,17 +19,29 @@ function Form() {
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let respons = await fetch(`${baseURL}/add`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ title, desc, due_date }),
-    });
-    if (respons.ok) {
-      let todo = await respons.json();
-      localStorage.setItem("add", todo.add);
-      router.replace("/todo");
-    } else {
-      alert("add-failed");
+    let token = localStorage.getItem("token");
+    console.log(newToDo, "ini new todo");
+    console.log(token, "ini token");
+    try {
+      let respons = await fetch(`http://localhost:3000/todo`, {
+        method: "POST",
+        headers: { "Content-type": "application/json", token: token },
+        body: JSON.stringify(newToDo),
+      });
+
+      console.log(respons.status);
+      if (respons.ok) {
+        let todo = await respons.json();
+        localStorage.setItem("add", todo.add);
+        setNewToDo({ name: "", desc: "", due_date: "" });
+        setOpenModal(false);
+        router.replace("/todo");
+      } else {
+        let errData = await respons.json();
+        console.log(errData);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
   const [openModal, setOpenModal] = useState(false);
@@ -33,9 +49,6 @@ function Form() {
     setOpenModal(!openModal);
     console.log(openModal);
   };
-  let todo = { title: "", desc: "", due_date: "" };
-  const [toDos, setToDos] = useState([]);
-  const [newToDo, setNewToDo] = useState(todo);
 
   return (
     <div className="">
@@ -50,7 +63,7 @@ function Form() {
           openModal ? "" : "hidden"
         }`}
       >
-        <form action="">
+        <form action="" onSubmit={handleSubmit}>
           <div>
             <IoClose
               onClick={toogleModal}
@@ -65,7 +78,8 @@ function Form() {
               type="text"
               onChange={handleOnChange}
               placeholder="Title"
-              value={newToDo.title}
+              name="name"
+              value={newToDo.name}
               className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
             />
           </div>
@@ -74,7 +88,7 @@ function Form() {
               Description
             </label> */}
             <textarea
-              name=""
+              name="desc"
               id=""
               cols="30"
               rows="5"
@@ -92,6 +106,7 @@ function Form() {
               onChange={handleOnChange}
               type="datetime-local"
               value={newToDo.due_date}
+              name="due_date"
               className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
             />
           </div>

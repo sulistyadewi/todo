@@ -52,18 +52,20 @@ function Form() {
 
   return (
     <div className="">
-      <button
-        onClick={toogleModal}
-        className="bg-gradient-to-br from-teal-700 to-teal-400 hover:scale-110 mt-8 px-3 py-3 ml-[58rem] rounded-full"
-      >
-        <IoIosAdd className="text-white w-8 h-8" />
-      </button>
+      <div className="relative">
+        <button
+          onClick={toogleModal}
+          className="bg-gradient-to-br from-teal-700 to-teal-400 absolute hover:scale-110 mt-4  px-3 py-3 ml-[76rem] rounded-full"
+        >
+          <IoIosAdd className="text-white w-8 h-8" />
+        </button>
+      </div>
       <div
         className={`border-[3px] border-teal-500 bg-gradient-to-b from-white to-teal-50 mt-8 max-w-sm px-6 py-6 mx-auto rounded-lg ${
           openModal ? "" : "hidden"
         }`}
       >
-        <form action="" onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit} className="">
           <div>
             <IoClose
               onClick={toogleModal}
@@ -104,7 +106,7 @@ function Form() {
             </label> */}
             <input
               onChange={handleOnChange}
-              type="datetime-local"
+              type="date"
               value={newToDo.due_date}
               name="due_date"
               className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"

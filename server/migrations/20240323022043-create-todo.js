@@ -26,10 +26,10 @@ module.exports = {
         type: Sequelize.STRING,
         validate: {
           notNull: {
-            msg: "name is require",
+            msg: "description is require",
           },
           notEmpty: {
-            msg: "name is require",
+            msg: "description is require",
           },
         },
       },
@@ -38,18 +38,18 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         validate: {
           notNull: {
-            msg: "name is require",
+            msg: "status is require",
           },
-          notEmpty: "name is require",
+          notEmpty: "status is require",
         },
       },
       due_date: {
         allowNull: false,
         type: Sequelize.DATE,
         validate: {
-          msg: "name is require",
+          msg: "due_date is require",
         },
-        notEmpty: "name is require",
+        notEmpty: "due_date is require",
       },
       createdAt: {
         allowNull: false,

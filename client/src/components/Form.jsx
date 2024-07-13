@@ -5,46 +5,43 @@ import { IoClose } from "react-icons/io5";
 import { IoIosAdd } from "react-icons/io";
 import baseURL from "@/baseURL";
 
-function Form() {
-  let todo = { name: "", desc: "", due_date: "" };
-  const [toDos, setToDos] = useState([]);
-  const [newToDo, setNewToDo] = useState(todo);
+function Form({ handleAdd }) {
+  console.log(handleAdd, "ini handleAdd");
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [due_date, setDue_date] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleOnChange = (e) => {
-    setNewToDo({
-      ...newToDo,
-      [e.target.name]: e.target.value,
-    });
-  };
   const router = useRouter();
+
   const handleSubmit = async (event) => {
+    console.log("tes");
     event.preventDefault();
     let token = localStorage.getItem("token");
-    console.log(newToDo, "ini new todo");
     console.log(token, "ini token");
     try {
       let respons = await fetch(`http://localhost:3000/todo`, {
         method: "POST",
         headers: { "Content-type": "application/json", token: token },
-        body: JSON.stringify(newToDo),
+        body: JSON.stringify({ name, desc, due_date }),
       });
 
       console.log(respons.status);
-      if (respons.ok) {
-        let todo = await respons.json();
-        localStorage.setItem("add", todo.add);
-        setNewToDo({ name: "", desc: "", due_date: "" });
-        setOpenModal(false);
-        router.replace("/todo");
-      } else {
-        let errData = await respons.json();
-        console.log(errData);
+      if (!respons.ok) {
+        console.log("Gagal Menambahkan");
+        return;
       }
+      let newTodo = await respons.json();
+      handleAdd(newTodo.data);
+      setName("");
+      setDesc("");
+      setDue_date("");
+      setOpenModal(!openModal);
     } catch (err) {
       console.log(err);
     }
   };
-  const [openModal, setOpenModal] = useState(false);
+
   const toogleModal = () => {
     setOpenModal(!openModal);
     console.log(openModal);
@@ -78,10 +75,10 @@ function Form() {
             </label> */}
             <input
               type="text"
-              onChange={handleOnChange}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Title"
               name="name"
-              value={newToDo.name}
+              value={name}
               className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
             />
           </div>
@@ -94,9 +91,9 @@ function Form() {
               id=""
               cols="30"
               rows="5"
-              onChange={handleOnChange}
+              onChange={(e) => setDesc(e.target.value)}
               placeholder="Description"
-              value={newToDo.desc}
+              value={desc}
               className="mt-3 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
             ></textarea>
           </div>
@@ -105,9 +102,9 @@ function Form() {
               Due_Date
             </label> */}
             <input
-              onChange={handleOnChange}
+              onChange={(e) => setDue_date(e.target.value)}
               type="date"
-              value={newToDo.due_date}
+              value={due_date}
               name="due_date"
               className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
             />

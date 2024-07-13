@@ -19,12 +19,12 @@ function Update({ todo, formUpdate, onClose }) {
   };
 
   return (
-    <div className="border-[3px] border-amber-500 bg-gradient-to-b from-white to-amber-50 mt-8 max-w-sm px-6 py-6 mx-auto rounded-lg">
+    <div className="border-[3px] border-amber-500 bg-gradient-to-b from-white to-amber-50 mt-8 max-w-sm px-6 py-6 mx-auto rounded-lg z-50">
       <form action="" onSubmit={handleSubmit}>
         {/* <div>
           <IoClose className="w-6 h-6 text-slate-600 ml-[19.5rem] hover:text-red-500" />
         </div> */}
-        <div>
+        <div className="flex flex-col">
           <input
             type="text"
             name="name"
@@ -34,7 +34,7 @@ function Update({ todo, formUpdate, onClose }) {
             className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <textarea
             name="desc"
             value={desc}
@@ -46,7 +46,7 @@ function Update({ todo, formUpdate, onClose }) {
             className="h-12 mt-2 p-1 border-b-2 border-gray-200 rounded text-slate-400 shadow-md outline-slate-500"
           ></textarea>
         </div>
-        <div>
+        <div className="flex flex-col">
           <input
             type="date"
             name="due_date"

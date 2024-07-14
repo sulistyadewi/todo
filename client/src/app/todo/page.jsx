@@ -75,11 +75,11 @@ function ToDo() {
         body: JSON.stringify(updateTodo),
       });
       if (!respons.ok) {
-        throw new Error("Gagal Mengupdate");
-        // const errData = await respons.json();
-        // const errMessage = errData.errors.join("<br>");
-        // Swal.fire("Error!", errMessage, "error");
-        // return;
+        // throw new Error("Gagal Mengupdate");
+        const errData = await respons.json();
+        const errMessage = errData.errors.join("<br>");
+        Swal.fire("Error!", errMessage, "error");
+        return;
       }
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>

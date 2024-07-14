@@ -27,12 +27,10 @@ const register = () => {
         router.replace("/login");
       });
     } else {
-      Swal.fire({
-        title: "Error",
-        text: "Register Failed",
-        icon: "error",
-        confirmButtonText: "Try Again!",
-      });
+      const errData = await response.json();
+      // console.log(errData);
+      const errmessage = errData.errors.join("<br>");
+      Swal.fire("Error", errmessage, "error");
     }
   };
 

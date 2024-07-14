@@ -29,12 +29,9 @@ function Login() {
         router.replace("/todo");
       });
     } else {
-      Swal.fire({
-        title: "Error",
-        text: "Login Failed",
-        icon: "error",
-        confirmButtonText: "Try Again!",
-      });
+      const errData = await respons.json();
+      const errMessage = errData.errors.join("<br>");
+      Swal.fire("Error", errMessage, "error");
     }
   };
 

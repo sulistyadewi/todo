@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "due_date is require",
           },
           isAfter: {
+            args: new Date().toISOString(),
             msg: "date must be greater than today's date",
           },
         },

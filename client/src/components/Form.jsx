@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { IoIosAdd } from "react-icons/io";
 import baseURL from "@/baseURL";
+import Swal from "sweetalert2";
 
 function Form({ handleAdd }) {
   console.log(handleAdd, "ini handleAdd");
@@ -29,7 +30,9 @@ function Form({ handleAdd }) {
       console.log(respons.status);
       if (!respons.ok) {
         console.log("Gagal Menambahkan");
-        return;
+        const errData = await respons.json();
+        const errmessage = errData.errors.join("<br>");
+        Swal.fire("Error", errmessage, "error");
       }
       let newTodo = await respons.json();
       handleAdd(newTodo.data);

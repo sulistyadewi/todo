@@ -4,7 +4,7 @@ const { comparePass } = require("../helper/bcrypt");
 const { generateToken } = require("../helper/jwt");
 
 class Controller {
-  static register(req, res) {
+  static register(req, res, next) {
     const { email, password } = req.body;
     const object = { email, password };
     User.create(object)
@@ -14,7 +14,7 @@ class Controller {
           .json({ msg: "register success", id: data.id, email: data.email });
       })
       .catch((err) => {
-        res.status(500).json({ err });
+        next(err);
       });
   }
   static login(req, res, next) {
@@ -23,11 +23,15 @@ class Controller {
     User.findOne({ where: { email } })
       .then((data) => {
         if (!data) {
-          throw { msg: "invalid email or password" };
+          const err = new Error("invalid email or password");
+          err.name = "LOGIN_FAILED";
+          throw err;
         } else {
           let comparePassword = comparePass(password, data.password);
           if (!comparePassword) {
-            throw { msg: "invalid email or password" };
+            const err = new Error("invalid email or password");
+            err.name = "LOGIN_FAILED";
+            throw err;
           } else {
             let payload = {
               id: data.id,

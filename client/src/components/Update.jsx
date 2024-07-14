@@ -19,7 +19,7 @@ function Update({ todo, formUpdate, onClose }) {
   };
 
   return (
-    <div className="border-[3px] border-amber-500 bg-gradient-to-b from-white to-amber-50 mt-8 max-w-sm px-6 py-6 mx-auto rounded-lg z-50">
+    <div className="fixed inset-x-0 bg-gradient-to-b from-amber-50 to-amber-200 shadow-2xl flex items-center border-[3px] border-amber-500  mt-8 max-w-sm px-6 py-6 mx-auto rounded-lg z-50">
       <form action="" onSubmit={handleSubmit}>
         {/* <div>
           <IoClose className="w-6 h-6 text-slate-600 ml-[19.5rem] hover:text-red-500" />
